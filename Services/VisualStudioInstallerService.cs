@@ -91,7 +91,7 @@ public class VisualStudioInstallerService
         }
 
         AnsiConsole.MarkupLine($"[{SmehTheme.FicsitOrange}]Running Visual Studio installer (this may take a long time)...[/]");
-        var result = await _processRunner.RunAsync(bootstrapperPath, arguments, tempDir, waitForExit: true);
+        var result = await StatusSpinner.RunAsync("Installing Visual Studio 2022...", () => _processRunner.RunAsync(bootstrapperPath, arguments, tempDir, waitForExit: true));
 
         if (result.ExitCode != 0)
         {
@@ -123,7 +123,7 @@ public class VisualStudioInstallerService
 
         var arguments = $"modify --installPath \"{installationPath}\" --config \"{configPath}\" --passive --wait --norestart";
         AnsiConsole.MarkupLine($"[{SmehTheme.FicsitOrange}]Applying Visual Studio config (SML workload) to the existing installation...[/]");
-        var result = await _processRunner.RunAsync(installerPath, arguments, tempDir, waitForExit: true);
+        var result = await StatusSpinner.RunAsync("Applying Visual Studio config...", () => _processRunner.RunAsync(installerPath, arguments, tempDir, waitForExit: true));
 
         if (result.ExitCode != 0)
         {
